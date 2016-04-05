@@ -1,14 +1,14 @@
 package com.deltixlab;
 
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class SignalFilter implements Filter {
 
 	public SignalFilter(int N, long limitTimeInterval) {
 		this.N = N;
 		this.limitTimeInterval = limitTimeInterval * 1000;
-		this.signalGenerations = new ArrayBlockingQueue<Long>(N - 1);
+		this.signalGenerations = new LinkedList<Long>();
 
 	}
 

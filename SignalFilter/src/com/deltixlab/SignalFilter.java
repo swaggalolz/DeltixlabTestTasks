@@ -1,43 +1,37 @@
 package com.deltixlab;
 
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import java.util.concurrent.BlockingQueue;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class SignalFilter implements Filter {
 
 	public SignalFilter(int N, long limitTimeInterval) {
 		this.N = N;
 		this.limitTimeInterval = limitTimeInterval * 1000;
-		this.signalGenerations = new ArrayBlockingQueue<Long>(N-1);
-		this.lock = new ReentrantLock();
+		this.signalGenerations = new ArrayBlockingQueue<Long>(N - 1);
+
 	}
 
 	private int N;
 	private long limitTimeInterval;
-	private BlockingQueue<Long> signalGenerations;
-	private Lock lock;
+	private Queue<Long> signalGenerations;
 
+	
 	@Override
-	public boolean isSignalAllowed() {
+	public synchronized boolean isSignalAllowed() {
 
-		if (this.signalGenerations.size() < this.N-1) {
+		if (this.signalGenerations.size() < this.N - 1) {
 			signalGenerations.offer(System.currentTimeMillis());
 			return true;
 		} else {
-			synchronized (lock) {
-				long timeNow = System.currentTimeMillis();
-				long currentTimeInterval = timeNow- this.signalGenerations.peek();
-				if (currentTimeInterval > this.limitTimeInterval) {
-					this.signalGenerations.poll();
-					this.signalGenerations.offer(timeNow);
-					return true;
-				} else {
-					return false;
-				}
+			long timeNow = System.currentTimeMillis();
+			long currentTimeInterval = timeNow - this.signalGenerations.peek();
+			if (currentTimeInterval > this.limitTimeInterval) {
+				this.signalGenerations.poll();
+				this.signalGenerations.offer(timeNow);
+				return true;
+			} else {
+				return false;
 			}
 		}
 
@@ -58,7 +52,5 @@ public class SignalFilter implements Filter {
 	public void setLimitTimeInterval(long limitTimeInterval) {
 		this.limitTimeInterval = limitTimeInterval;
 	}
-
-	
 
 }

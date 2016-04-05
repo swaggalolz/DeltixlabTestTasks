@@ -3,7 +3,7 @@ package com.deltixlab;
 public class Main {
 
 	public static void main(String[] args) {
-
+	
 		Filter frequencyFilter = new SignalFilter(5, 100);
 		while (true) {
 

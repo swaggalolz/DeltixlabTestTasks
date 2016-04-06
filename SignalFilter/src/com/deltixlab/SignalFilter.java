@@ -16,15 +16,16 @@ public class SignalFilter implements Filter {
 	private long limitTimeInterval;
 	private Queue<Long> signalGenerations;
 
-	
+	// It uses the synchronized method because at bytecode it is less than a
+	// synchronized block at the expense of set ACC_SYNCHRONIZED flag at
+	// method_info
 	@Override
 	public synchronized boolean isSignalAllowed() {
-
+		long timeNow = System.currentTimeMillis();
 		if (this.signalGenerations.size() < this.N - 1) {
-			signalGenerations.offer(System.currentTimeMillis());
+			signalGenerations.offer(timeNow);
 			return true;
 		} else {
-			long timeNow = System.currentTimeMillis();
 			long currentTimeInterval = timeNow - this.signalGenerations.peek();
 			if (currentTimeInterval > this.limitTimeInterval) {
 				this.signalGenerations.poll();

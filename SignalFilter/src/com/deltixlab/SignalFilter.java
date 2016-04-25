@@ -3,30 +3,29 @@ package com.deltixlab;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class SignalFilter implements Filter {
+public /*final*/ class SignalFilter implements Filter {
 
-	public SignalFilter(int N, long limitTimeInterval) {
-		this.N = N;
-		this.limitTimeInterval = limitTimeInterval * 1000;
-		this.signalGenerations = new LinkedList<Long>();
-
+	public SignalFilter(int N) {
+		this.N = N - 1 ;
+		this.limitTimeInterval = 60 * 1000;
+		signalGenerations = new LinkedList<Long>();
 	}
 
-	private int N;
-	private long limitTimeInterval;
+	private final int N;
+	private final long limitTimeInterval;
 	private Queue<Long> signalGenerations;
-
-	// It uses the synchronized method because at bytecode it is less than a
-	// synchronized block at the expense of set ACC_SYNCHRONIZED flag at
-	// method_info
+	
+	//private long timeNow ;
+	//private long currentTimeInterval;
+	
 	@Override
-	public synchronized boolean isSignalAllowed() {
+	public /*final*/ synchronized  boolean isSignalAllowed() {	
 		long timeNow = System.currentTimeMillis();
-		if (this.signalGenerations.size() < this.N - 1) {
-			signalGenerations.offer(timeNow);
+		if ( this.signalGenerations.size() < N) {
+			this.signalGenerations.offer(timeNow);
 			return true;
 		} else {
-			long currentTimeInterval = timeNow - this.signalGenerations.peek();
+			long currentTimeInterval =  timeNow - this.signalGenerations.peek();
 			if (currentTimeInterval > this.limitTimeInterval) {
 				this.signalGenerations.poll();
 				this.signalGenerations.offer(timeNow);
@@ -35,23 +34,7 @@ public class SignalFilter implements Filter {
 				return false;
 			}
 		}
-
 	}
-
-	public int getN() {
-		return N;
-	}
-
-	public void setN(int n) {
-		N = n;
-	}
-
-	public long getLimitTimeInterval() {
-		return limitTimeInterval;
-	}
-
-	public void setLimitTimeInterval(long limitTimeInterval) {
-		this.limitTimeInterval = limitTimeInterval;
-	}
+	
 
 }

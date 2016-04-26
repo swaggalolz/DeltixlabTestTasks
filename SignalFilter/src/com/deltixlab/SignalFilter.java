@@ -20,12 +20,12 @@ public /*final*/ class SignalFilter implements Filter {
 	
 	@Override
 	public /*final*/ synchronized  boolean isSignalAllowed() {	
-		long timeNow = System.currentTimeMillis();
+		final long timeNow = System.currentTimeMillis();
 		if ( this.signalGenerations.size() < N) {
 			this.signalGenerations.offer(timeNow);
 			return true;
 		} else {
-			long currentTimeInterval =  timeNow - this.signalGenerations.peek();
+			final long currentTimeInterval =  timeNow - this.signalGenerations.peek();
 			if (currentTimeInterval > this.limitTimeInterval) {
 				this.signalGenerations.poll();
 				this.signalGenerations.offer(timeNow);

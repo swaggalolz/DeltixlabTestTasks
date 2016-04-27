@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 public class SignalFilterTest extends TestCase {
 
 	
-	
 	public void testExceptionMessage() {
 		try {
 			new SignalFilter(0);
@@ -16,10 +15,22 @@ public class SignalFilterTest extends TestCase {
 	    }
 	}
 	
-	public void testFilterWork() {
-		SignalFilter filter = new SignalFilter(1);
+	public void testFilterWorkWihoutDelay() {
+		SignalFilter filter = new SignalFilter(3);
+		assertTrue(filter.isSignalAllowed());
+		assertTrue(filter.isSignalAllowed());
 		assertTrue(filter.isSignalAllowed());
 		assertEquals(false,filter.isSignalAllowed());
+	}
+	
+	public void testFilterWorkWithDelay() throws InterruptedException {
+		SignalFilter filter = new SignalFilter(2);
+		assertTrue(filter.isSignalAllowed());
+		Thread.sleep(30000);
+		assertTrue(filter.isSignalAllowed());
+		assertEquals(false,filter.isSignalAllowed());
+		Thread.sleep(30000);
+		assertTrue(filter.isSignalAllowed());		
 	}
 
 	

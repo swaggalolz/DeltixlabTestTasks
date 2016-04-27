@@ -7,6 +7,8 @@ public final class CircularBuffer<T> {
 	 
 	 @SuppressWarnings("unchecked")
 	 public CircularBuffer(int size) {
+		 if (size <= 0)
+	            throw new IllegalArgumentException("CircularBuffer capacity must be positive.");
 		 elements = (T[]) new Object[size];
 	 }
 	 

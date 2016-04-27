@@ -17,6 +17,10 @@ public final class CircularBuffer<T> {
 	        offset = (offset + 1) % elements.length;
 	        ++unconsumedElements;
 	 }
+	 public  void offer(T elem)  {
+	        elements[offset] = elem;
+	        offset = (offset + 1) % elements.length;
+	 }
 
 	 private int unconsumedElements = 0;
 	 

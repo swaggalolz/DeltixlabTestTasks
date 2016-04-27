@@ -23,8 +23,8 @@ public class SignalFilter implements Filter {
 			return true;
 		} else {
 			currentTimeInterval = timeNow - this.signalGenerations.peek();
-			if (currentTimeInterval > this.limitTimeInterval) {
-				this.signalGenerations.add(timeNow);
+			if (currentTimeInterval >= this.limitTimeInterval) {				
+				this.signalGenerations.offer(timeNow);
 				return true;
 			} else {
 				return false;

@@ -1,30 +1,28 @@
 package com.deltixlab;
 
-public final class CircularBuffer<T> {
+public final class CircularBuffer {
 	
-	 private  T[] elements;
+	 private long[] elements;
 	 private int offset = 0;
 	 
 	 @SuppressWarnings("unchecked")
 	 public CircularBuffer(int size) {
 		 if (size <= 0)
 	            throw new IllegalArgumentException("CircularBuffer capacity must be positive.");
-		 elements = (T[]) new Object[size];
+		 elements = new long[size];
 	 }
 	 
-	 public  void add(T elem)  {
+	 public  void add(long elem)  {
 	        elements[offset] = elem;
 	        offset = (offset + 1) % elements.length;
-	        ++unconsumedElements;
+	        if(unconsumedElements < elements.length)
+	        	++unconsumedElements;
 	 }
-	 public  void offer(T elem)  {
-	        elements[offset] = elem;
-	        offset = (offset + 1) % elements.length;
-	 }
+
 
 	 private int unconsumedElements = 0;
 	 
-	 public  T peek()  {
+	 public  long peek()  {
 	        return elements[(offset + (elements.length - unconsumedElements)) % elements.length];
 	 }
 	 

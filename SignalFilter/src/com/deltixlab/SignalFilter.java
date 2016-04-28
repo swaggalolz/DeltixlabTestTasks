@@ -5,12 +5,12 @@ public class SignalFilter implements Filter {
 	public SignalFilter(int N) {
 		this.N = N ;
 		this.limitTimeInterval = 60 * 1000;
-		signalGenerations = new CircularBuffer<Long>(N);
+		signalGenerations = new CircularBuffer(N);
 	}
 
 	private final int N;
 	private final long limitTimeInterval;
-	private CircularBuffer<Long> signalGenerations;
+	private CircularBuffer signalGenerations;
 
 	private  long timeNow;
 	private  long currentTimeInterval;
@@ -24,7 +24,7 @@ public class SignalFilter implements Filter {
 		} else {
 			currentTimeInterval = timeNow - this.signalGenerations.peek();
 			if (currentTimeInterval >= this.limitTimeInterval) {				
-				this.signalGenerations.offer(timeNow);
+				this.signalGenerations.add(timeNow);
 				return true;
 			} else {
 				return false;

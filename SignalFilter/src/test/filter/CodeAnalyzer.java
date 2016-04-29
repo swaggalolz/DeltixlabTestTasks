@@ -21,6 +21,15 @@ public class CodeAnalyzer {
     public void measureShared(BenchmarkState state) {
         state.signalFilter.isSignalAllowed();
     }
+    @Benchmark
+    public void test() {
+        SignalFilter signalFilter = new SignalFilter(3);
+        signalFilter.isSignalAllowed();
+        signalFilter.isSignalAllowed();
+        signalFilter.isSignalAllowed();
+        signalFilter.isSignalAllowed();
+        signalFilter.isSignalAllowed();
+    }
 
     public static void main(String ... args) throws RunnerException{
         Options opt = new OptionsBuilder()

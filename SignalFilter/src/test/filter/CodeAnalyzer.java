@@ -13,19 +13,19 @@ import java.util.concurrent.TimeUnit;
 
 public class CodeAnalyzer {
 
-    @State(Scope.Benchmark)  //общий на все потоки
+    @State(Scope.Benchmark)  
     public static class BenchmarkFilter {
         SignalFilter signalFilter = new SignalFilter(3);
     }
 
-    @State(Scope.Thread)  //экземпл€р дл€ каждого потока
+    @State(Scope.Thread) 
     public static class ThreadFilter {
         SignalFilter signalFilter = new SignalFilter(3);
     }
 
     @Benchmark
-    @BenchmarkMode(Mode.AverageTime) //среднее врем€ работы.
-    //@BenchmarkMode(Mode.Throughput)   //число операций в секунду
+    @BenchmarkMode(Mode.AverageTime) 
+    //@BenchmarkMode(Mode.Throughput)   
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     public void measureForUnsharedFilter( ThreadFilter filter ) {
         filter.signalFilter.isSignalAllowed();

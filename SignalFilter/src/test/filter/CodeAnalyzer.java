@@ -1,6 +1,5 @@
 package test.filter;
 
-import com.deltixlab.CircularBuffer;
 import com.deltixlab.SignalFilter;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -39,49 +38,6 @@ public class CodeAnalyzer {
        filter.signalFilter.isSignalAllowed();
     }
 
-    @State(Scope.Thread)
-    public static class ThreadBuffer {
-        CircularBuffer circularBuffer = new CircularBuffer(3);
-    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    //@BenchmarkMode(Mode.Throughput)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void measureForUnsharedBufferAdd( ThreadBuffer buffer, ThreadLongValues values ) {
-        buffer.circularBuffer.add(values.timeNow);
-    }
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    //@BenchmarkMode(Mode.Throughput)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void measureForUnsharedBufferPeek( ThreadBuffer buffer ) {
-        buffer.circularBuffer.peek();
-    }
-
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    //@BenchmarkMode(Mode.Throughput)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void measureGetTime() {
-        System.currentTimeMillis();
-    }
-
-    @State(Scope.Thread)
-    public static class ThreadLongValues {
-        long timeNow = System.currentTimeMillis();
-        long timeBefore = System.currentTimeMillis();
-        long result;
-    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    //@BenchmarkMode(Mode.Throughput)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void measureCalculation( ThreadLongValues values) {
-       values.result = values.timeNow - values.timeBefore;
-    }
 
 
 

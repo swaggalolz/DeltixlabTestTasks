@@ -23,16 +23,18 @@ public class CodeAnalyzer {
     }
 
     @Benchmark
-    @BenchmarkMode(Mode.AverageTime) 
-    //@BenchmarkMode(Mode.Throughput)   
+    @Warmup(iterations = 500 )
+    @Measurement(iterations = 500)
+    @BenchmarkMode(Mode.SingleShotTime)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     public void measureForUnsharedFilter( ThreadFilter filter ) {
         filter.signalFilter.isSignalAllowed();
     }
 
     @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    //@BenchmarkMode(Mode.Throughput)
+    @Warmup(iterations = 500 )
+    @Measurement(iterations = 500)
+    @BenchmarkMode(Mode.SingleShotTime)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     public void measureForSharedFilter( BenchmarkFilter filter) {
        filter.signalFilter.isSignalAllowed();
@@ -45,8 +47,6 @@ public class CodeAnalyzer {
     public static void main(String ... args) throws RunnerException{
         Options opt = new OptionsBuilder()
                 .include(CodeAnalyzer.class.getSimpleName())
-                .warmupIterations(5)
-                .measurementIterations(5)
                 .threads(4)
                 .forks(1)
                 .build();

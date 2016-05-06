@@ -15,8 +15,8 @@ public class CodeAnalyzer {
 
     @State(Scope.Benchmark)  
     public static class BenchmarkFilter {
-        SignalFilter signalFilter = new SignalFilter(30);
-        TestFIlter testFIlter = new TestFIlter(30);
+        SignalFilter signalFilter = new SignalFilter(30);  //version with class fields
+        TestFIlter testFIlter = new TestFIlter(30);     //version with local variables
     }
 
     @State(Scope.Thread) 
